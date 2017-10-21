@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+
+File propFile = new File(getProjectDir(),"../local.properties")
+Properties properties = new Properties()
+properties.load(propFile.newDataInputStream())
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
@@ -19,6 +23,7 @@ android {
                 cppFlags "-frtti -fexceptions"
             }
         }
+        buildConfigField "String","APP_ID","\"" + properties.get("appid","null") + "\""
     }
     buildTypes {
         release {
@@ -26,20 +31,40 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
-        }
+    //**兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'**
+    useLibrary 'org.apache.http.legacy'
+
+    sourceSets{
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    //bmob
+    implementation 'cn.bmob.android:bmob-sdk:3.5.5'
+    //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
+    implementation 'cn.bmob.android:http-legacy:1.0'
+
+    //android arch
+    implementation "android.arch.lifecycle:extensions:1.0.0-rc1"
+
+    //circle imageview
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }

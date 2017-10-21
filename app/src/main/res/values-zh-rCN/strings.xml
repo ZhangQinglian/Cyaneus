@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">靛蓝</string>
+
+    <!--bottom menu-->
+    <string name="bottom_menu_home">首页</string>
+    <string name="bottom_menu_resume">简历</string>
 </resources>

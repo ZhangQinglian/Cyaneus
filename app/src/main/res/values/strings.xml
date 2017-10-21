@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Cyaneus</string>
+
+    <!--bottom menu-->
+    <string name="bottom_menu_home">Home</string>
+    <string name="bottom_menu_resume">Resume</string>
 </resources>
