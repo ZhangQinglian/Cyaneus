@@ -20,6 +20,9 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.os.Bundle
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +39,7 @@ class ResumeFragment : BaseFragment() {
 
     private var resumeModel:ResumeModel? = null
 
+    private var adapter:ResumeAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,17 +52,24 @@ class ResumeFragment : BaseFragment() {
 
     override fun initView() {
         super.initView()
+        val linearLayout = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        adapter = ResumeAdapter()
+        resume_list.layoutManager = linearLayout
+        resume_list.adapter = adapter
+        resume_list.itemAnimator = DefaultItemAnimator()
     }
 
     override fun initData() {
-        resumeModel!!.loadOwner()
-        resumeModel!!.owner.observe(this,object :Observer<Owner>{
-            override fun onChanged(t: Owner?) {
-                if(t != null){
-                    Picasso.with(context).load(Uri.parse(t.avatarUrl)).placeholder(R.mipmap.ic_launcher).into(avatar)
-                    auto_write_text.startWrite(t.bio)
+
+        resumeModel!!.loadOwner().observe(this,object :Observer<ResumeData>{
+            override fun onChanged(t: ResumeData?) {
+                if(t!=null){
+                    Picasso.with(context).load(Uri.parse(t.owner!!.avatarUrl)).placeholder(R.mipmap.ic_launcher).into(avatar)
+                    auto_write_text.startWrite(t.owner!!.bio)
+                    adapter!!.add(t.resumeIntro!!)
                 }
             }
+
         })
     }
 
@@ -77,21 +88,49 @@ class ResumeFragment : BaseFragment() {
     }
 
     inner class ResumeAdapter : RecyclerView.Adapter<ResumeHolder>(){
+
+        private var resumeList:MutableList<ResumeItem> = mutableListOf()
+
+        fun updateAll(data:List<ResumeItem>){
+            resumeList.clear()
+            resumeList.addAll(data)
+            notifyDataSetChanged()
+        }
+
+        fun add(data:ResumeItem){
+            resumeList.add(data)
+            notifyItemInserted(resumeList.size-1)
+        }
         override fun onBindViewHolder(holder: ResumeHolder?, position: Int) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            holder!!.bind(resumeList[position])
         }
 
         override fun getItemCount(): Int {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            return resumeList.size
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ResumeHolder {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ResumeHolder? {
+            val inflator = LayoutInflater.from(context)
+            when(viewType){
+                ResumeItem.INTRO-> return ResumeIntroHolder(inflator.inflate(R.layout.listitem_resume_intro,parent!!,false))
+                else-> return null
+            }
         }
 
+        override fun getItemViewType(position: Int): Int {
+            return resumeList[position].getType()
+        }
     }
 
-    inner class ResumeHolder(view:View) : RecyclerView.ViewHolder(view){
+    inner abstract class ResumeHolder(view:View) : RecyclerView.ViewHolder(view){
+
+        abstract fun bind(resumeItem: ResumeItem)
+    }
+
+    inner class ResumeIntroHolder(view:View):ResumeHolder(view){
+        override fun bind(resumeItem: ResumeItem) {
+
+        }
 
     }
 }

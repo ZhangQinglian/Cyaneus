@@ -4,4 +4,7 @@
     <!--bottom menu-->
     <string name="bottom_menu_home">首页</string>
     <string name="bottom_menu_resume">简历</string>
+
+    <!-- resume-->
+    <string name="resume_intro">个人简介</string>
 </resources>

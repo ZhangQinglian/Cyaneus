@@ -17,14 +17,22 @@
 package com.zqlite.android.cyaneus
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.MenuItem
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.SaveListener
 import com.zqlite.android.cyaneus.base.BaseActivity
+import com.zqlite.android.cyaneus.entity.OwnerTag
 import com.zqlite.android.cyaneus.view.resume.ResumeActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer.*
 
 class MainActivity : BaseActivity() {
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun getLayout(): Int {
         return R.layout.activity_main

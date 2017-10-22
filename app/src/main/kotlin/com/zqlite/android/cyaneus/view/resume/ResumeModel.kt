@@ -20,25 +20,53 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.QueryListener
+import com.zqlite.android.cyaneus.entity.OwnerTag
 import com.zqlite.android.cyaneus.entity.Owner
+import com.zqlite.android.cyaneus.repo.BmobResumeRepo
+import com.zqlite.android.cyaneus.repo.IResumeRepo
 
 /**
  * Created by scott on 2017/10/21.
  */
 class ResumeModel:ViewModel() {
 
-    val owner : MutableLiveData<Owner> = MutableLiveData()
+    val resumeData : MutableLiveData<ResumeData> = MutableLiveData()
 
-    public fun loadOwner(){
-        val query = BmobQuery<Owner>()
-        query.getObject("9bc829e75d",object :QueryListener<Owner>(){
-            override fun done(p0: Owner?, p1: BmobException?) {
-                if(p0 != null){
-                    owner.value = p0
-                }
+    val repo:IResumeRepo = BmobResumeRepo()
+    fun loadOwner():MutableLiveData<ResumeData>{
+
+        repo.getResumeData().addObserver { _, any ->
+            if(any!=null){
+                resumeData.value = any as ResumeData
             }
+        }
+        return resumeData
+    }
+}
 
-        })
+abstract class ResumeItem{
+
+
+    abstract fun getType():Int
+
+    abstract fun getIndex():Int
+
+    companion object Type{
+        val INTRO = 1
+    }
+}
+
+class ResumeIntro(val tags: List<OwnerTag>):ResumeItem(){
+
+
+
+    override fun getType(): Int {
+        return ResumeItem.INTRO
+    }
+
+    override fun getIndex(): Int {
+        return 1
     }
 }
