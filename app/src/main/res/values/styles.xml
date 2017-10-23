@@ -10,4 +10,7 @@
 
     </style>
 
+    <style name="ResumeStyle" parent="AppTheme">
+
+    </style>
 </resources>

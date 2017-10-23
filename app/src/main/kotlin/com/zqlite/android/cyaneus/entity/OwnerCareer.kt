@@ -14,19 +14,12 @@
  *    limitations under the License.
  */
 
-package com.zqlite.android.cyaneus.view.resume
+package com.zqlite.android.cyaneus.entity
 
-import com.zqlite.android.cyaneus.entity.Owner
+import cn.bmob.v3.BmobObject
+import cn.bmob.v3.datatype.BmobDate
 
 /**
- * Created by scott on 2017/10/22.
+ * Created by scott on 2017/10/23.
  */
-class ResumeData {
-    var owner:Owner ? = null
-    var resumeIntro : ResumeIntro? = null
-    var resumeCareer : ResumeCareer? = null
-    var resumeContact : ResumeContact? = null
-    fun isReady():Boolean{
-        return owner!=null && resumeIntro !=null && resumeCareer != null && resumeContact != null
-    }
-}
+class OwnerCareer(val userId:String,val start:String,val end:String,val companyName:String,val position:String,val companyAvatar:String) : BmobObject()

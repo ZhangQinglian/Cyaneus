@@ -2,9 +2,11 @@
     <string name="app_name">靛蓝</string>
 
     <!--bottom menu-->
-    <string name="bottom_menu_home">首页</string>
+    <string name="bottom_menu_blog">博客</string>
     <string name="bottom_menu_resume">简历</string>
 
     <!-- resume-->
     <string name="resume_intro">个人简介</string>
+    <string name="resume_career">时间线</string>
+    <string name="resume_contact">联系方式</string>
 </resources>

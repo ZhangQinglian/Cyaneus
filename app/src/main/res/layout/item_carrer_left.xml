@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~    Copyright 2017 zhangqinglian
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/company_avatar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_centerHorizontal="true"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:civ_circle_background_color="@android:color/white"
+        app:civ_border_width="3dp"
+        app:civ_border_color="@android:color/white"/>
+    <TextView
+        android:id="@+id/career_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/company_avatar"
+        android:layout_alignTop="@id/company_avatar"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:gravity="right"/>
+    <TextView
+        android:id="@+id/career_company_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/company_avatar"
+        android:layout_below="@id/career_time"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:gravity="right"/>
+    <TextView
+        android:id="@+id/career_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/company_avatar"
+        android:layout_below="@id/career_company_name"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:gravity="left"/>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="40dp"
+        android:background="@android:color/white"
+        android:layout_below="@id/company_avatar"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

@@ -2,9 +2,11 @@
     <string name="app_name">Cyaneus</string>
 
     <!--bottom menu-->
-    <string name="bottom_menu_home">Home</string>
+    <string name="bottom_menu_blog">Blog</string>
     <string name="bottom_menu_resume">Resume</string>
 
     <!-- resume-->
     <string name="resume_intro">Personal Tags</string>
+    <string name="resume_career">Career</string>
+    <string name="resume_contact">Contact</string>
 </resources>

@@ -24,6 +24,8 @@ import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.QueryListener
 import com.zqlite.android.cyaneus.entity.OwnerTag
 import com.zqlite.android.cyaneus.entity.Owner
+import com.zqlite.android.cyaneus.entity.OwnerCareer
+import com.zqlite.android.cyaneus.entity.OwnerContact
 import com.zqlite.android.cyaneus.repo.BmobResumeRepo
 import com.zqlite.android.cyaneus.repo.IResumeRepo
 
@@ -55,12 +57,12 @@ abstract class ResumeItem{
 
     companion object Type{
         val INTRO = 1
+        val CAREER = 2
+        val CONTACT = 3
     }
 }
 
 class ResumeIntro(val tags: List<OwnerTag>):ResumeItem(){
-
-
 
     override fun getType(): Int {
         return ResumeItem.INTRO
@@ -69,4 +71,25 @@ class ResumeIntro(val tags: List<OwnerTag>):ResumeItem(){
     override fun getIndex(): Int {
         return 1
     }
+}
+
+class ResumeCareer(val careers:List<OwnerCareer>):ResumeItem(){
+    override fun getType(): Int {
+        return ResumeItem.CAREER
+    }
+
+    override fun getIndex(): Int {
+        return 2
+    }
+}
+
+class ResumeContact(val contact:OwnerContact):ResumeItem(){
+    override fun getIndex(): Int {
+        return 3
+    }
+
+    override fun getType(): Int {
+        return ResumeItem.CONTACT
+    }
+
 }

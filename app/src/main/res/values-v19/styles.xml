@@ -24,8 +24,11 @@
         <item name="colorAccent">@color/colorAccent</item>
 
 
+
+    </style>
+
+    <style name="ResumeStyle" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
-
 </resources>

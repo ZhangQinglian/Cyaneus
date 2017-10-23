@@ -15,15 +15,19 @@
   ~    limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="300dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="300dp"
     android:layout_height="match_parent"
     android:layout_gravity="left"
     android:background="@color/colorPrimary">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
     <Button
         android:id="@+id/jump_resume"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:text="简历"
+        android:layout_alignParentBottom="true"/>
 
-</LinearLayout>
+</RelativeLayout>

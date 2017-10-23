@@ -18,20 +18,31 @@ package com.zqlite.android.cyaneus.view.resume
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.method.LinkMovementMethod
+import android.text.method.MovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.squareup.picasso.Picasso
 import com.zqlite.android.cyaneus.R
 import com.zqlite.android.cyaneus.base.BaseFragment
-import com.zqlite.android.cyaneus.entity.Owner
 import kotlinx.android.synthetic.main.fragment_resume.*
+import com.zqlite.android.cyaneus.MainActivity
+
+
+
 /**
  * Created by scott on 2017/10/21.
  */
@@ -64,9 +75,11 @@ class ResumeFragment : BaseFragment() {
         resumeModel!!.loadOwner().observe(this,object :Observer<ResumeData>{
             override fun onChanged(t: ResumeData?) {
                 if(t!=null){
-                    Picasso.with(context).load(Uri.parse(t.owner!!.avatarUrl)).placeholder(R.mipmap.ic_launcher).into(avatar)
+                    Picasso.with(context).load(Uri.parse(t.owner!!.avatarUrl)).into(avatar)
                     auto_write_text.startWrite(t.owner!!.bio)
                     adapter!!.add(t.resumeIntro!!)
+                    adapter!!.add(t.resumeCareer!!)
+                    adapter!!.add(t.resumeContact!!)
                 }
             }
 
@@ -113,6 +126,8 @@ class ResumeFragment : BaseFragment() {
             val inflator = LayoutInflater.from(context)
             when(viewType){
                 ResumeItem.INTRO-> return ResumeIntroHolder(inflator.inflate(R.layout.listitem_resume_intro,parent!!,false))
+                ResumeItem.CAREER -> return ResumeCareerHolder(inflator.inflate(R.layout.listitem_resume_career,parent!!,false))
+                ResumeItem.CONTACT -> return ResumeContactHolder(inflator.inflate(R.layout.listitem_resume_contact,parent!!,false))
                 else-> return null
             }
         }
@@ -128,8 +143,90 @@ class ResumeFragment : BaseFragment() {
     }
 
     inner class ResumeIntroHolder(view:View):ResumeHolder(view){
-        override fun bind(resumeItem: ResumeItem) {
 
+        private val tagsText = view.findViewById<TextView>(R.id.tags_container)
+
+        override fun bind(resumeItem: ResumeItem) {
+            if(resumeItem is ResumeIntro){
+                val resumeIntro = resumeItem
+                val sb = StringBuilder()
+                for(tag in resumeIntro.tags){
+                    sb.append("#${tag.tag}#")
+                    if(tag.tag.length>=0){
+                        sb.append("\n")
+                    }
+                }
+                val ssb = SpannableStringBuilder(sb.toString())
+                for(tag in resumeIntro.tags){
+                    val start = ssb.indexOf("#${tag.tag}#")
+                    val end = start + tag.tag.length+2
+                    val clickableSpnan = object : ClickableSpan(){
+                        override fun onClick(p0: View?) {
+                            if(tag.url != null && tag.url.isNotEmpty()){
+                                val intent = Intent(Intent.ACTION_VIEW)
+                                intent.data = Uri.parse(tag.url)
+                                startActivity(intent)
+                            }
+                        }
+
+                    }
+                    ssb.setSpan(clickableSpnan,start,end,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+                tagsText.movementMethod = LinkMovementMethod.getInstance()
+                tagsText.text = ssb
+
+            }
+        }
+
+    }
+
+    inner class ResumeCareerHolder(view:View):ResumeHolder(view){
+
+        private val careerContainer : LinearLayout = view.findViewById(R.id.career_container)
+
+        override fun bind(resumeItem: ResumeItem) {
+            if(resumeItem is ResumeCareer){
+                for(career in resumeItem.careers){
+                    val careerItem = LayoutInflater.from(context).inflate(R.layout.item_carrer_left,careerContainer,false)
+                    val llp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+                    careerItem.layoutParams = llp
+                    careerContainer.addView(careerItem)
+                    careerItem.findViewById<TextView>(R.id.career_time).text = career.start + " - " + career.end
+                    careerItem.findViewById<TextView>(R.id.career_company_name).text = career.companyName
+                    careerItem.findViewById<TextView>(R.id.career_position).text = career.position
+                    Picasso.with(context).load(career.companyAvatar).into(careerItem.findViewById<ImageView>(R.id.company_avatar))
+                }
+                val careerItem = LayoutInflater.from(context).inflate(R.layout.item_carrer_bottom,careerContainer,false)
+                val llp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
+                careerItem.layoutParams = llp
+                careerContainer.addView(careerItem)
+                careerItem.findViewById<ImageView>(R.id.company_avatar).setImageResource(R.drawable.carrer_default_ic)
+            }
+        }
+
+    }
+
+    inner class ResumeContactHolder(view:View):ResumeHolder(view){
+        override fun bind(resumeItem: ResumeItem) {
+            if(resumeItem is ResumeContact){
+                itemView!!.findViewById<TextView>(R.id.contact_container).movementMethod = LinkMovementMethod.getInstance()
+                val ssb = SpannableStringBuilder(resumeItem.contact.email)
+                val clickableSpnan = object : ClickableSpan(){
+                    override fun onClick(p0: View?) {
+                        if(resumeItem.contact.email != null && resumeItem.contact.email.isNotEmpty()){
+                            val intent = Intent(Intent.ACTION_SENDTO)
+                            intent.type = "plain/text"
+                            intent.data = Uri.fromParts( "mailto",resumeItem.contact.email, null)
+                            intent.putExtra(Intent.EXTRA_EMAIL, resumeItem.contact.email)
+                            intent.putExtra(Intent.EXTRA_SUBJECT, "")
+                            intent.putExtra(Intent.EXTRA_TEXT, "")
+                            startActivity(intent)
+                        }
+                    }
+                }
+                ssb.setSpan(clickableSpnan,0,resumeItem.contact.email.length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                itemView!!.findViewById<TextView>(R.id.contact_container).text = ssb
+            }
         }
 
     }

@@ -17,25 +17,16 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp">
-    <TextView
-        android:id="@+id/resume_intro_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="25sp"
-        android:text="@string/resume_intro"
-        android:layout_alignParentTop="true"
+    android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/company_avatar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_centerHorizontal="true"
-        android:padding="20dp"
-        />
-    <TextView
-        android:id="@+id/tags_container"
-        android:layout_below="@id/resume_intro_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/color_tags"/>
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:civ_circle_background_color="@android:color/white"
+        app:civ_border_width="3dp"
+        app:civ_border_color="@android:color/white"/>
 </RelativeLayout>

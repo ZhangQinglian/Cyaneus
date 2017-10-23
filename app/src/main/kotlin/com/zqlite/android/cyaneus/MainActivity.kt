@@ -19,13 +19,16 @@ package com.zqlite.android.cyaneus
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import cn.bmob.v3.datatype.BmobDate
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
 import com.zqlite.android.cyaneus.base.BaseActivity
+import com.zqlite.android.cyaneus.entity.OwnerCareer
 import com.zqlite.android.cyaneus.entity.OwnerTag
 import com.zqlite.android.cyaneus.view.resume.ResumeActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer.*
+import java.util.*
 
 class MainActivity : BaseActivity() {
 
@@ -46,7 +49,6 @@ class MainActivity : BaseActivity() {
             item: MenuItem ->
             when(item.itemId){
                 R.id.navigation_home-> goHome()
-                R.id.navigation_resume-> goResume()
                 else->true
             }
         }
@@ -60,10 +62,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun goHome():Boolean{
+        return true
+    }
 
-        return true
-    }
-    private fun goResume():Boolean{
-        return true
-    }
 }

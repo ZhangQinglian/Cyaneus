@@ -18,24 +18,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="30dp">
     <TextView
-        android:id="@+id/resume_intro_title"
+        android:id="@+id/resume_career_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:textSize="25sp"
-        android:text="@string/resume_intro"
+        android:text="@string/resume_career"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:padding="20dp"
         />
-    <TextView
-        android:id="@+id/tags_container"
-        android:layout_below="@id/resume_intro_title"
+    <LinearLayout
+        android:id="@+id/career_container"
+        android:layout_below="@id/resume_career_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/color_tags"/>
+        android:orientation="vertical"/>
 </RelativeLayout>
